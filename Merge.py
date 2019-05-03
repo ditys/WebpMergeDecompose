@@ -13,7 +13,7 @@ try:
         filestreams = []
         for i in filenames:
             filestreams+=[Image.open("MergePhotos/"+the_folder+"/"+i)]
-        filestreams[0].save("Result_meger/"+the_folder+".webp","WEBP",save_all=True,append_images=filestreams[1:])
+        filestreams[0].save("Result_merge/"+the_folder+".webp","WEBP",save_all=True,append_images=filestreams[1:])
         print("Folder: ",the_folder ," finished.          ")
 except:
     print(the_folder)
