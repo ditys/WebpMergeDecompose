@@ -1,5 +1,5 @@
 from PIL import Image
-import os
+import os,time
 
 folders=[]
 for _,i,_ in os.walk("MergePhotos/"):
@@ -16,7 +16,7 @@ try:
         if not os.path.exists("Result_merge"):
             os.mkdir("Result_merge")
         filestreams[0].save("Result_merge/"+the_folder+".webp","WEBP",save_all=True,append_images=filestreams[1:])
-        print("Folder: ",the_folder ," finished. "+"Process:"+str(folders.index(the_folder)+1)+"/"+str(len(folders))+"                                                                ")
+        print("Folder: ",the_folder ," finished. "+"["+str(folders.index(the_folder)+1)+"/"+str(len(folders))+"]                                                                ")
 except:
     input("\n",the_folder)
 
@@ -30,4 +30,7 @@ for i in filenames:
     if not os.path.exists("Result_merge"):
         os.mkdir("Result_merge")
     temp.save("Result_merge/"+i+".webp","WEBP")
-    print(i,"finished.  "+"Process:"+str(filenames.index(i)+1)+"/"+str(len(filenames))+"                               ")
+    print(i,"finished.  "+"["+str(filenames.index(i)+1)+"/"+str(len(filenames))+"]                               ")
+print("\n\nFinish all task.")
+time.sleep(2)
+exit()

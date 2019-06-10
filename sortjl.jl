@@ -39,3 +39,14 @@ for i = 1:30
         end
     end
 end 
+auto_delete_empty_folder = true
+if auto_delete_empty_folder == true
+    dir = readdir()
+    for i in dir
+        if isdir(i)
+            if readdir(i) == []
+                rm(i)
+            end
+        end
+    end
+end
