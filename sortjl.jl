@@ -1,4 +1,4 @@
-function four_digits(x::Int)::String
+function digits_4(x::Int)::String
     if x < 10
         return string("000",x)
     elseif x<100
@@ -10,7 +10,7 @@ function four_digits(x::Int)::String
     end
 end
 
-function three_digits(x::Int)::String
+function digits_3(x::Int)::String
     if x < 10
         return string("00",x)
     elseif x<100
@@ -20,7 +20,7 @@ function three_digits(x::Int)::String
     end
 end
 
-function two_digits(x::Int)::String
+function digits_2(x::Int)::String
     if x < 10
         return string("0",x)
     else
@@ -31,11 +31,13 @@ end
 filenames = readdir(pwd())
 
 for i = 1:30
-    p_file_name = string("ev",two_digits(i))
+    p_file_name = string("ev",digits_2(i))
     mkdir(p_file_name)
     for j in filenames
-        if occursin(p_file_name,j)
-            mv(j,string(p_file_name,"/",j))
+        if isfile(j)
+            if occursin(p_file_name,j)
+                mv(j,string(p_file_name,"/",j))
+            end
         end
     end
 end 
