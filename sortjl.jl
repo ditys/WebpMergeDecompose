@@ -28,27 +28,30 @@ function digits_2(x::Int)::String
     end
 end
 
-filenames = readdir(pwd())
+function main()
+    filenames = readdir(pwd())
 
-for i = 1:30
-    p_file_name = string("ev",digits_2(i))
-    mkdir(p_file_name)
-    for j in filenames
-        if isfile(j)
-            if occursin(p_file_name,j)
-                mv(j,string(p_file_name,"/",j))
+    for i = 1:30
+        p_file_name = string("ev",digits_2(i))
+        mkdir(p_file_name)
+        for j in filenames
+            if isfile(j)
+                if occursin(p_file_name,j)
+                    mv(j,string(p_file_name,"/",j))
+                end
             end
         end
-    end
-end 
-auto_delete_empty_folder = true
-if auto_delete_empty_folder == true
-    dir = readdir()
-    for i in dir
-        if isdir(i)
-            if readdir(i) == []
-                rm(i)
+    end 
+    auto_delete_empty_folder = true
+    if auto_delete_empty_folder == true
+        dir = readdir()
+        for i in dir
+            if isdir(i)
+                if readdir(i) == []
+                    rm(i)
+                end
             end
         end
     end
 end
+main()
