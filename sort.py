@@ -40,16 +40,20 @@ def main():
             files.append(i)
     common_dict: dict[str, list[str]] = {}
     Accepted: bool = False
+    Accepte_receviced: str = ""
     while not Accepted:
         pattern: str = input("Keyin pattern : ")
         if not pattern:
             continue
         common_dict.clear()
         for i in files:
-            pattern_match_tuple = re.compile(pattern).match(i)
+            pattern_search_tuple = re.compile(pattern).search(i)
             common_str: str = ""
-            if pattern_match_tuple:
-                common_str = pattern_match_tuple[0]
+            if pattern_search_tuple:
+                if pattern_search_tuple.groups() != ():
+                    common_str = "".join(pattern_search_tuple.groups())
+                else:
+                    common_str = pattern_search_tuple[0]
             else:
                 continue
             if common_str in common_dict:
@@ -58,13 +62,19 @@ def main():
                 common_dict[common_str] = [i]
         for i in common_dict.keys():
             print(i, " : ", common_dict[i])
-        Accepte_receviced: str = input(
-            "It is a result of match. Does it right?(nothing key in is Right;anything is error)")
-        if not Accepte_receviced:
+        Accepte_receviced = input(
+            "It is a result of match. Does it right?\n(nothing key in is Right;`inone` is put them in one folder;anything is error)")
+        if Accepte_receviced in ["", "inone"]:
             Accepted = True
+
     File_Queue: Queue = Queue()
-    for i in common_dict.keys():
-        File_Queue.put({i: common_dict[i]})
+    if Accepte_receviced == "":
+        for i in common_dict.keys():
+            File_Queue.put({i: common_dict[i]})
+    elif Accepte_receviced == "inone":
+        Inone_Folder_name: str = input("inone folder's name: ")
+        for i in common_dict.keys():
+            File_Queue.put({Inone_Folder_name: common_dict[i]})
     threading_list: list[Thread] = []
     for _ in range(threading_num):
         threading_list.append(Thread(target=SortFile, args=(File_Queue,)))

@@ -14,4 +14,4 @@
 ### 3. Sort
 #### Most of cgs has many class's name differeent . sort.py can help you to handle cgs to folder by folder if you edit it based on your cgs' name. 
 #### sortjl.jl change line (34.35)
-#### sort.py change line (31.32)
+#### * sort.py ~~change line (31.32)~~ keyin your Regular expression.
