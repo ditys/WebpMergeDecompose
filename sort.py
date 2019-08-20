@@ -19,16 +19,12 @@ def SortFile(q: Queue):
     while not q.empty():
         a_dict: dict = q.get()
         for Folder in a_dict.keys():
-            if os.path.exists(Folder):
-                for File in a_dict[Folder]:
-                    shutil.move(
-                        File, "{folder}/{filename}".format(folder=Folder, filename=File))
-            else:
+            if not os.path.exists(Folder):
                 os.mkdir(Folder)
                 print("{folder} is created.".format(folder=Folder))
-                for File in a_dict[Folder]:
-                    shutil.move(
-                        File, "{folder}/{filename}".format(folder=Folder, filename=File))
+            for File in a_dict[Folder]:
+                shutil.move(
+                    File, "{folder}/{filename}".format(folder=Folder, filename=File))
             print("{folder} is finished.".format(folder=Folder))
 
 
