@@ -40,7 +40,7 @@ def main():
     while not Accepted:
         pattern: str = input("Keyin pattern : ")
         if not pattern:
-            continue
+            return None
         common_dict.clear()
         for i in files:
             pattern_search_tuple = re.compile(pattern).search(i)
@@ -57,7 +57,8 @@ def main():
             else:
                 common_dict[common_str] = [i]
         for i in common_dict.keys():
-            print(i, " : ", common_dict[i])
+            print(i, " : ", common_dict[i], "\n")
+        print("\n\nTotal : ", len(common_dict.keys()))
         Accepte_receviced = input(
             "It is a result of match. Does it right?\n(nothing key in is Right;`inone` is put them in one folder;anything is error)")
         if Accepte_receviced in ["", "inone"]:
@@ -76,6 +77,9 @@ def main():
         threading_list.append(Thread(target=SortFile, args=(File_Queue,)))
     for i in threading_list:
         i.start()
+    for i in threading_list:
+        i.join()
+    print("\n\n\n\n\n")
 
 
 if __name__ == "__main__":
