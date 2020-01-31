@@ -30,6 +30,7 @@ def SortFile(q: Queue):
 
 def main():
     dirs: list[str] = os.listdir()
+    dirs.remove("sort.py")
     files: list[str] = []
     for i in dirs:
         if os.path.isfile(i):
