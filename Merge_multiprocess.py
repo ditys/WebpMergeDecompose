@@ -11,8 +11,10 @@ import ctypes
 import sys
 import multiprocessing
 
+all_task: int = 0
 
-def Worker(fs: Queue):
+
+def Worker(fs: Queue, all_task: int):
     # for the_folder in folders:
     while not fs.empty():
         the_folder = fs.get()
@@ -30,7 +32,8 @@ def Worker(fs: Queue):
             temp = Image.open("MergePhotos/"+the_folder)
             temp.save("Result_merge/"+the_folder+".webp", "WEBP")
             print(the_folder, "finished.  ")
-
+        ctypes.windll.kernel32.SetConsoleTitleW(
+            "Process [{0}/{1}]".format(all_task-fs.qsize(), all_task))
 
 def main():
     threading_number: int = 10
@@ -39,6 +42,7 @@ def main():
     folders = []
     for i in os.listdir("MergePhotos/"):
         folders += [i]
+    all_task = len(folders)
     try:
         files = multiprocessing.Queue()
         for i in folders:
@@ -47,7 +51,7 @@ def main():
             os.mkdir("Result_merge")
         for _ in range(threading_number):
             threading_list += [multiprocessing.Process(
-                target=Worker, args=(files,))]
+                target=Worker, args=(files, all_task))]
             threading_list[-1].start()
         for i in threading_list:
             i.join()
