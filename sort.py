@@ -90,9 +90,11 @@ if __name__ == "__main__":
     except IOError:
         with open("sortpy.IOError.log", "w") as log:
             log.write(IOError)
+        print("\n\nIt has a error.\a")
     except OSError:
         with open("sortpy.OSError.log", "w") as log:
             log.write(OSError)
-    finally:
         print("\n\nIt has a error.\a")
+    finally:
+        print("\n\nThe end.")
         input()
