@@ -19,8 +19,8 @@ namespace MergeCS
         static void Main(string[] args)
         {
             OpenCL.IsEnabled = true;
-            string[] folders = Directory.GetDirectories("MergePhotos/");
-            string[] files = Directory.GetFiles("MergePhotos/");
+            string[] folders = Directory.GetDirectories("MergePhotos");
+            string[] files = Directory.GetFiles("MergePhotos");
             Directory.CreateDirectory("resultMerge");
             Console.WriteLine(DateTime.Now.ToString());
 
@@ -33,8 +33,6 @@ namespace MergeCS
             {
                 q.Enqueue(new WorkItem { Name = theFolder, IsFile = false });
             }
-
-            Console.WriteLine(folders.Length);
             Thread[] Threads = new Thread[10];
             try
             {
@@ -85,7 +83,7 @@ namespace MergeCS
                         settings.Colors = 256;
                         collection.Quantize(settings);
                         collection.Optimize();
-                        string temp = String.Format("resultMerge/{0}.webp", workItem.Name.Substring(workItem.Name.LastIndexOf('/') + 1));
+                        string temp = string.Format("resultMerge/{0}.webp", workItem.Name.Substring(workItem.Name.LastIndexOf('/') + 1));
                         collection.Write(temp);
                         Console.WriteLine(temp);
                     }
