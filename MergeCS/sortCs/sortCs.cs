@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 namespace cstemp
 {
-    class Program
+    class sortCs
     {
         public static int Main()
         {
@@ -114,7 +114,6 @@ namespace cstemp
                     t.Start();
                 }
             }
-            return 0;
         }
 
         private static void SortFile(ConcurrentQueue<Dictionary<string, List<string>>> q)
