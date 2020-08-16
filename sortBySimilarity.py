@@ -108,7 +108,7 @@ def generateFileGroup():
                     tempGroupFiles.add(j)
         for i in tempGroupFiles:
             del ic.imageFile[i]
-        print("A group finished.")
+        print("{0} group finished.".format(tempkey))
         ic.fileGroups[ic.getGroupName()] = tempGroupFiles
 
 
