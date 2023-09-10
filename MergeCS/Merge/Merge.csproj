@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PublishAot>true</PublishAot>
+		<TrimMode>full</TrimMode>
+		<RunAOTCompilation>True</RunAOTCompilation>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+		<PublishReadyToRunEmitSymbols>false</PublishReadyToRunEmitSymbols>
+		<DebuggerSupport>false</DebuggerSupport>
+		<EnableUnsafeUTF7Encoding>true</EnableUnsafeUTF7Encoding>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<MetadataUpdaterSupport>true</MetadataUpdaterSupport>
+		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+		<IlcDisableReflection >true</IlcDisableReflection>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>none</DebugType>
+	</PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q8-x64" Version="13.2.0" />
+  </ItemGroup>
+
+</Project>
