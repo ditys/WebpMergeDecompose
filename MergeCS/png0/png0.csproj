@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.21.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="worker">
+      <HintPath>..\worker\bin\Release\netstandard2.0\worker.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

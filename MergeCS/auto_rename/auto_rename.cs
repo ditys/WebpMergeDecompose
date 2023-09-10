@@ -3,7 +3,7 @@ using System.IO;
 
 namespace cstemp
 {
-    class Program
+    class auto_rename
     {
         public static void folder_to_file(string path)
         {

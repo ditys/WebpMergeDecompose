@@ -22,14 +22,14 @@ try:
                 filestreams+=[Image.open("MergePhotos/"+the_folder+"/"+i)]
             if not os.path.exists("Result_merge"):
                 os.mkdir("Result_merge")
-            filestreams[0].save("Result_merge/"+the_folder+".webp","WEBP",save_all=True,append_images=filestreams[1:])
+            filestreams[0].save("Result_merge/"+the_folder+".webp","WEBP",save_all=True,append_images=filestreams[1:],lossless=True)
             print("Folder: ",the_folder ," finished. "+"["+str(folders.index(the_folder)+1)+"/"+str(len(folders))+"]                                                                ")
         else :
             print(the_folder+" starting..."+"Process:"+str(folders.index(the_folder)+1)+"/"+str(len(folders)),end="\r")
             temp=Image.open("MergePhotos/"+the_folder)
             if not os.path.exists("Result_merge"):
                 os.mkdir("Result_merge")
-            temp.save("Result_merge/"+the_folder+".webp","WEBP")
+            temp.save("Result_merge/"+the_folder+".webp","WEBP",quality=100)
             print(the_folder,"finished.  "+"["+str(folders.index(the_folder)+1)+"/"+str(len(folders))+"]                               ")
 except:
     input("\n\n\nSomething Error.\a")
