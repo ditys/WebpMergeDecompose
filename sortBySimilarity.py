@@ -22,10 +22,19 @@ def Singleton(Fun):
     return getSingleton
 
 
+class ImageItem:
+    mean: np.ndarray
+    distance: np.ndarray
+    img: np.ndarray
+    def __init__(self, mean: np.ndarray, distance: np.ndarray) -> None:
+        self.mean = mean
+        self.distance = distance
+
+
 @Singleton
 class ImageCollections:
     def __init__(self):
-        self.imageFile: Dict[str, np.ndarray] = {}
+        self.imageFile: Dict[str, ImageItem] = {}
         self.fileGroups: Dict[str, Set[str]] = {}
         self.__groupId: int = -1
         self.wantSimilarity: float = 0.7
@@ -43,16 +52,23 @@ def loadImageFile(fs: Set[str]):
     print("---"*10, "Loading Files", "---"*10)
     ic = ImageCollections()
     for i in fs:
-        if i[i.rindex("."):] in [".png", ".webp"]:
-            try:
-                ic.imageFile[i] = np.array(Image.open(i).convert("RGBA"))
-            except IOError:
-                print("Error Key: { %s }" % (i,))
-        else:
-            try:
-                ic.imageFile[i] = np.array(Image.open(i).convert("RGB"))
-            except IOError:
-                print("Error Key: { %s }" % (i,))
+        try:
+            img:np.ndarray
+            # if i[i.rindex("."):] in [".png", ".webp"]:
+            #     ic.imageFile[i] = np.array(Image.open(i).convert("RGBA"))
+            # else:
+            #     ic.imageFile[i] = np.array(Image.open(i).convert("RGB"))
+            if i[i.rindex("."):] in [".png", ".webp"]:
+                img = np.array(Image.open(i).convert("RGBA"))
+            else:
+                img = np.array(Image.open(i).convert("RGB"))
+            m = np.mean(img)
+            d = np.greater_equal(img,m)
+            imgItem:ImageItem = ImageItem(mean=m,distance=d)
+            imgItem.img = img
+            ic.imageFile[i] = imgItem
+        except IOError:
+            print("Error Key: { %s }" % (i,))
 
 
 # --------------------------------------------------------------------
@@ -60,20 +76,16 @@ def loadImageFile(fs: Set[str]):
 # H (hammingDistance): calculate image's similarity by Hamming
 # N (normalAllPixel): calculate image's similarity by Pixel
 # --------------------------------------------------------------------
-def hammingDistance(img1: np.ndarray, img2: np.ndarray) -> float:
-    mean1 = np.mean(img1)
-    mean2 = np.mean(img2)
-    distance1 = np.greater_equal(img1, mean1)
-    distance2 = np.greater_equal(img2, mean2)
-    return 1 - spatial.distance.hamming(distance1.flatten(), distance2.flatten())
+def hammingDistance(img1: ImageItem, img2: ImageItem) -> float:
+    return 1 - spatial.distance.hamming(img1.distance.flatten(), img2.distance.flatten())
 
 
-def normalAllPixel(currentImageFIle, tempImageFile):
+def normalAllPixel(currentImageFIle:ImageItem, tempImageFile:ImageItem):
     iSimilarity: np.ndarray = np.zeros(
-        tempImageFile.shape[:2], np.bool)
+        tempImageFile.img.shape[:2], np.bool)
     for i in range(len(iSimilarity)):
         for j in range(len(iSimilarity[0])):
-            if tempImageFile[i][j].tostring() == currentImageFIle[i][j].tostring():
+            if tempImageFile.img[i][j].tostring() == currentImageFIle.img[i][j].tostring():
                 iSimilarity[i][j] = True
     return iSimilarity.sum()
 
@@ -84,15 +96,15 @@ def generateFileGroup():
     while ic.imageFile:
         tempkey: str = list(ic.imageFile.keys())[0]
         tempGroup: Dict[str, List[str]] = {}
-        tempImageFile: Image.Image = ic.imageFile[tempkey]
-        tempImageSize = tempImageFile.shape[0] * tempImageFile.shape[1]
+        tempImageFile: ImageItem = ic.imageFile[tempkey]
+        tempImageSize:int = tempImageFile.img.shape[0] * tempImageFile.img.shape[1]
 
         tempGroup[tempkey] = [tempkey]
 
         for iFile in ic.imageFile:
             if iFile == tempkey:
                 continue
-            currentImageFIle: np.ndarray = ic.imageFile[iFile]
+            currentImageFIle: ImageItem = ic.imageFile[iFile]
 
             if ic.simMode == "N":
                 if normalAllPixel(currentImageFIle, tempImageFile)/tempImageSize > ic.wantSimilarity:
@@ -127,10 +139,7 @@ def reorganizeFiles():
 def main():
     dirs: set[str] = set(os.listdir())
     dirs.remove("sortBySimilarity.py")
-    files: set[str] = set()
-    for i in dirs:
-        if os.path.isfile(i):
-            files.add(i)
+    files: set[str] = set((x for x in dirs if os.path.isfile(x)))
 
     ic = ImageCollections()
     ic.wantSimilarity = float(input("want sim(float):"))
