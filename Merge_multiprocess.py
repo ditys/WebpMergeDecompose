@@ -26,11 +26,11 @@ def Worker(fs: Queue, all_task: int):
             for i in filenames:
                 filestreams += [Image.open("MergePhotos/"+the_folder+"/"+i)]
             filestreams[0].save("Result_merge/"+the_folder+".webp",
-                                "WEBP", save_all=True, append_images=filestreams[1:])
+                                "WEBP", save_all=True, append_images=filestreams[1:], lossless=True)
             print("Folder: ", the_folder, " finished. ")
         else:
             temp = Image.open("MergePhotos/"+the_folder)
-            temp.save("Result_merge/"+the_folder+".webp", "WEBP")
+            temp.save("Result_merge/"+the_folder+".webp", quality=100)
             print(the_folder, "finished.  ")
         ctypes.windll.kernel32.SetConsoleTitleW(
             "Process [{0}/{1}]".format(all_task-fs.qsize(), all_task))
