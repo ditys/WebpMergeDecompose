@@ -29,7 +29,7 @@
 	  <DebugType>none</DebugType>
 	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q8-x64" Version="13.2.0" />
+    <PackageReference Include="Magick.NET-Q8-x64" Version="13.3.0" />
   </ItemGroup>
 
 </Project>
